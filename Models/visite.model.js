@@ -21,6 +21,29 @@ const visite=new mongoose.Schema(
     }  
 )
 
+const Ordonnance=new mongoose.Schema(
+    {
+        visiteId:{
+            type: mongoose.Types.ObjectId,
+        },
+        Medicaments:[
+            {
+                name:{
+                    type:String,
+            
+                },
+                dosage: {
+                    type:Number,
+                }, 
+                duree:{
+                    type:Number,
+                }
+            }
+        ]
+    }
+)
+
+
 
 const Visite = mongoose.model('visites', visiteSchema);
 export default Visite;
