@@ -12,7 +12,7 @@ const allowedSpecialites = ['generaliste',
 'autre'
 ];
 
-const user=new mongoose.Schema(
+const userSchema =new mongoose.Schema(
     {
         Nom:
         {  type:String,
@@ -50,5 +50,5 @@ const user=new mongoose.Schema(
 )
 
 
-const User = mongoose.model('User', userSchema);
-export default User;
+const doctor = mongoose.model('User', userSchema);
+export default doctor;

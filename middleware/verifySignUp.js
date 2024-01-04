@@ -1,5 +1,5 @@
-import db from "../models/index.js";
-const User = db.user;
+import doctor from '../Models/user.schema.js';
+const User = doctor;
 
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
     // Username

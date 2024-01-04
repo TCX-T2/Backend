@@ -1,10 +1,10 @@
 import config from '../config/auth.config.js';
 import jwt from 'jsonwebtoken';
-import db from '../models/index.js';
-import bycrypt from 'bcryptjs';
-const User = db.user;
+import bycrypt from 'bcrypt';
+import doctor from '../Models/user.schema.js';
+const User = doctor;
 
-const signup = (req, res) => {
+export const signup = (req, res) => {
     // Save User to Database
     User.create({
         username: req.body.username,
@@ -28,7 +28,7 @@ const signup = (req, res) => {
         });
 }
 
-const signin = (req, res) => {
+export const signin = (req, res) => {
     User.findOne({
         where: {
             username: req.body.username,
@@ -62,8 +62,3 @@ const signin = (req, res) => {
             res.status(500).send({ message: err.message });
         });
 }
-
-export default {
-    signup,
-    signin,
-};
