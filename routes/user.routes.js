@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post("/signup", [checkDuplicateUsernameOrEmail], signup);
 router.post("/signin", signin);
+router.get("/profile", [verifyToken], getProfile);
 
 router.get("/", async (req, res) => {
   // get all users
