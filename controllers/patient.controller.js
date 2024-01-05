@@ -4,6 +4,7 @@ const Patient = db.patient;
 export const getPatients = async (req, res) => {
   try {
     const patients = await Patient.find({ medecinId: req.userId });
+    if (!patients) res.status(404).send(" no patients found");
     res.send(patients);
   } catch (err) {
     res.status(500).send({ message: err.message });
@@ -30,39 +31,40 @@ export const addPatient = async (req, res) => {
 };
 
 export const getPatientById = async (req, res) => {
-    try {
-      const patient = await Patient.findById(req.params.id);
-      res.send(patient);
-    } catch (err) {
-        res.status(500).send({ message: err.message });
-        }
-}
+  try {
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) res.status(404).send("patient not found");
+    res.send(patient);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
 
 export const updatePatient = async (req, res) => {
-    try{
-        const patient = await Patient.findById(req.params.id);
-        patient.Nom_p = req.body.Nom_p;
-        patient.Prenom_p = req.body.Prenom_p;
-        patient.Date_naissance = req.body.Date_naissance;
-        patient.Phone = req.body.Phone;
-        patient.Sexe = req.body.Sexe;
-        patient.SituationFamiliale = req.body.SituationFamiliale;
-        patient.Antecedants = req.body.Antecedants;
-        await patient.save(patient);
-        res.send({ message: "Patient was updated successfully!" });
-    }
-    catch(err){
-        res.status(500).send({ message: err.message });
-    }
-}
+  try {
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) res.status(404).send("patient not found");
+    patient.Nom_p = req.body.Nom_p;
+    patient.Prenom_p = req.body.Prenom_p;
+    patient.Date_naissance = req.body.Date_naissance;
+    patient.Phone = req.body.Phone;
+    patient.Sexe = req.body.Sexe;
+    patient.SituationFamiliale = req.body.SituationFamiliale;
+    patient.Antecedants = req.body.Antecedants;
+    await patient.save(patient);
+    res.send({ message: "Patient was updated successfully!" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
 
 export const deletePatient = async (req, res) => {
-    try{
-        const patient = await Patient.findById(req.params.id);
-        await patient.remove(patient);
-        res.send({ message: "Patient was deleted successfully!" });
-    }
-    catch(err){
-        res.status(500).send({ message: err.message });
-    }
-}
+  try {
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) res.status(404).send("patient not found");
+    await Patient.deleteOne(patient);
+    res.send({ message: "Patient was deleted successfully!" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};

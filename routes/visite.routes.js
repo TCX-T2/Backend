@@ -5,7 +5,7 @@ import {
   getVisites,
   addVisite,
   getVisiteById,
-  // updateVisite,
+  updateVisite,
   deleteVisite,
 } from "../controllers/visite.controller.js";
 
@@ -18,10 +18,10 @@ const router = express.Router();
 // router.put("/:id", [verifyToken], updateVisite);
 // router.delete("/:id", [verifyToken], deleteVisite);
 
-router.get("/all", getVisites);
-router.post("/:id/add", addVisite);
- router.get("/:id", getVisiteById);
-// router.put("/:id", updateVisite);
-router.delete("/:id", deleteVisite);
+router.get("/:idP/all", getVisites);
+router.post("/:idP/add", addVisite);
+router.get("/:idP/:idV", getVisiteById);
+router.put("/:idP/:idV", updateVisite);
+router.delete("/:idP/:idV", deleteVisite);
 
 export default router;

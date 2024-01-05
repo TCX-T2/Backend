@@ -24,7 +24,7 @@ app.use("/api/patients", patientRouter);
 
 
 import visiteRouter from "./routes/visite.routes.js";
-app.use("/api/visites", visiteRouter);
+app.use("/api/visites/", visiteRouter);
 
 // simple route
 app.get("/api/", (req, res) => {

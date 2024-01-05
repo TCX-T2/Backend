@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 // const Ordonnance = new mongoose.Schema({
 //   visiteId: {
 //     type: mongoose.Types.ObjectId,
+//      ref: "Visite",
 //   },
 //   Medicaments: [
 //     {
