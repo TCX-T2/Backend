@@ -4,7 +4,7 @@ import {
   signin,
   getProfile,
   updateUser,
-  getUserByEmail,
+  forgetPassword,
 } from "../controllers/user.controller.js";
 import checkDuplicateUsernameOrEmail from "../middleware/verifyDuplicate.js";
 import verifyToken from "../middleware/authJwt.js";
@@ -16,7 +16,7 @@ router.post("/signup", [checkDuplicateUsernameOrEmail], signup);
 router.post("/signin", signin);
 router.get("/profile", [verifyToken], getProfile);
 router.put("/profile", [verifyToken], updateUser);
-router.post("/modifyPassword", getUserByEmail);
+router.post("/forgetPassword", forgetPassword);
 router.post("/logout", (req, res) => {
   res.status(200).send({ accessToken: null });
 });
