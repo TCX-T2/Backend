@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+// Schéma pour les créneaux horaires disponibles
+
 
 const RendezVous= mongoose.model(
   "Listerendezvous",
@@ -19,4 +21,4 @@ const RendezVous= mongoose.model(
     )
 );
 
-export default RendezVous;
+export default RendezVous ;

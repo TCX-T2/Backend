@@ -18,7 +18,18 @@ const Visite = mongoose.model(
     Motif_Consultation: {
       type: String,
     },
-    
+    compte_rendu: {
+      type: String,
+    },
+    Ordonance: {
+      type: String,
+    },
+    liste_imagerie: {
+      type: String,
+    },
+    rapport_generee: {
+      type: String,
+    },
   })
 );
 
