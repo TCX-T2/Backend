@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import {Visite} from 'visite.model.js'
 
-const patient=new mongoose.Schema(
+const patientSchema =new mongoose.Schema(
     {
         medecinId:{
             type: mongoose.Types.ObjectId, 

@@ -1,5 +1,4 @@
-import mongoose, { mongo } from 'mongoose';
-import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 
 const allowedSpecialites = ['generaliste',
 'chirurgien',
@@ -38,8 +37,7 @@ const userSchema =new mongoose.Schema(
         },
         Speciality: {
              type: String, 
-             enum: allowedSpecialites, 
-             required: true 
+             enum: allowedSpecialites
             },
 
         PhoneNumber:{
