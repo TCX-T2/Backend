@@ -31,6 +31,12 @@ app.use("/rendezvous", RendezVousRouter);
 import ordonnanceRouter from "./routes/ordannance.routes.js";
 app.use("/ordonnances/", ordonnanceRouter);
 
+import notificationRouter from "./routes/notification.routes.js";
+app.use("/notifications/", notificationRouter);
+
+import detectionRouter from "./routes/detection.routes.js";
+app.use("/detection/", detectionRouter);
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Marhaba..." });
