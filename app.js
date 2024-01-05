@@ -25,6 +25,9 @@ app.use("/patients", patientRouter);
 import visiteRouter from "./routes/visite.routes.js";
 app.use("/visites/", visiteRouter);
 
+import ordonnanceRouter from "./routes/ordannance.routes.js";
+app.use("/ordonnances/", ordonnanceRouter);
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Marhaba..." });
