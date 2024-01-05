@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const Ordonnance=mongoose.Model("Ordonnance",new mongoose.Schema(
+const Ordonnance=mongoose.model("Ordonnance",new mongoose.Schema(
   {
     Visite_Id:{
       type: mongoose.Types.ObjectId,
@@ -23,7 +23,7 @@ const Ordonnance=mongoose.Model("Ordonnance",new mongoose.Schema(
   }
 ))
 
-const Visite= mongoose.Model("visites", new mongoose.Schema({
+const Visite= mongoose.model("visites", new mongoose.Schema({
   patientId: {
     type: mongoose.Types.ObjectId,
     ref: "Patient",
@@ -45,7 +45,7 @@ const Visite= mongoose.Model("visites", new mongoose.Schema({
   },
   Liste_images: [
     {
-      type:Image,
+      type:String,
     }
   ],
   rapport_generee: {
@@ -53,4 +53,4 @@ const Visite= mongoose.Model("visites", new mongoose.Schema({
   },
 }));
 
-export {Visite,Ordonnance};
+export default {Visite,Ordonnance};
