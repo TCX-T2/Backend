@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bycrypt from "bcrypt";
 import db from "../Models/index.js";
+import { addNotifications } from "./notification.controller.js";
 const User = db.user;
 
 export const signup = (req, res) => {
@@ -74,6 +75,8 @@ export const signin = async (req, res) => {
           mail: user.mail,
           accessToken: token,
         });
+        // add the notifications for each rendez vous that the user has today
+        addNotifications(user._id);
       }
     );
   } catch (err) {

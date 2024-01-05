@@ -1,6 +1,5 @@
-// responseHandler.js
-
 import HistoriqueAction from "../Models/History.schema.js";
+import onFinished from "on-finished";
 
 const ActionTypes = {
   TYPE1: "Create",
@@ -9,10 +8,8 @@ const ActionTypes = {
   TYPE4: "Read",
 };
 
-const responseHandler = (req, res, next) => {
-  const originalSend = res.send;
-  res.send = function (body) {
-    // Perform actions before sending the response
+export const responseHandler = (req, res, next) => {
+  onFinished(res, (err, data) => {
     const resourceId =
       req.params.idP || req.params.idR || req.params.id || req.userId;
     const ressourceName = req.baseUrl.split("/")[1];
@@ -31,11 +28,7 @@ const responseHandler = (req, res, next) => {
       RessourceName: ressourceName,
       actionType,
     });
-
-    // Call the original res.send with the provided body
-    originalSend.call(this, body);
-  };
-
+  });
   next();
 };
 

@@ -5,6 +5,11 @@ import mongoose from "mongoose";
 const RendezVous = mongoose.model(
   "Listerendezvous",
   new mongoose.Schema({
+    medecin_Id: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     patient_Id: {
       type: mongoose.Types.ObjectId,
       ref: "Patient",

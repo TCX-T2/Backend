@@ -4,6 +4,7 @@ import User from "./user.schema.js";
 import Patient from "./patient.schema.js";
 import { Visite, Ordonnance } from "./visite.schema.js";
 import RendezVous from "./rendezvous.schema.js";
+import Notification from "./notifications.schema.js";
 
 const db = {};
 
@@ -12,7 +13,8 @@ db.mongoose = mongoose;
 db.user = User;
 db.patient = Patient;
 db.visite = Visite;
-db.RendezVous= RendezVous;
+db.RendezVous = RendezVous;
 db.ordonnance = Ordonnance;
+db.notification = Notification;
 
 export default db;

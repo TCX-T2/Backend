@@ -7,7 +7,10 @@ export const getAllrendez = async (req, res) => {
   try {
     const rendezvous = await RendezVous.find();
 
-    if (!rendezvous) res.status(404).send(" No rendez vous found");
+    if (!rendezvous) {
+      res.status(404).send(" No rendez vous found");
+      return;
+    }
     res.send(rendezvous);
   } catch (err) {
     res.status(500).send({ message: err.message });
@@ -19,6 +22,7 @@ export const addRendezVous = async (req, res) => {
 
   if (patient) {
     const rendez_vous = new RendezVous({
+      medecin_Id: req.userId,
       patient_Id: patient._id,
       heureRendezVous: req.body.heureRendezVous,
       DateRendezVous: req.body.DateRendezVous,
