@@ -1,7 +1,5 @@
 import db from "../Models/index.js";
 const Patient = db.patient;
-const Visite = db.visite;
-const User = db.user;
 
 export const getPatients = async (req, res) => {
   try {
