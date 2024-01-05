@@ -18,6 +18,7 @@ const Visite = mongoose.model(
     Motif_Consultation: {
       type: String,
     },
+    
   })
 );
 
