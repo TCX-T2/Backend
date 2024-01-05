@@ -19,8 +19,8 @@ app.get("/", (req, res) => {
 import userRouter from "./routes/user.routes.js";
 app.use("/api/users", userRouter);
 
-// import patientRouter from "./routes/patient.routes.js";
-// app.use("/api/patients", patientRouter);
+import patientRouter from "./routes/patient.routes.js";
+app.use("/api/patients", patientRouter);
 
 // simple route
 app.get("/api/", (req, res) => {
