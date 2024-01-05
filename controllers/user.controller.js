@@ -1,12 +1,12 @@
 import config from "../config/auth.config.js";
 import jwt from "jsonwebtoken";
 import bycrypt from "bcrypt";
-import doctor from "../Models/user.schema.js";
-import { Op } from "sequelize";
+import db from "../Models/index.js";
+const User = db.user;
 
 export const signup = (req, res) => {
   // Save User to Database
-  doctor.create({
+  const user = new User({
     Nom: req.body.Nom,
     Prenom: req.body.Prenom,
     Username: req.body.Username,
@@ -14,17 +14,12 @@ export const signup = (req, res) => {
     password: bycrypt.hashSync(req.body.password, 8),
     Speciality: req.body.Speciality,
     PhoneNumber: req.body.PhoneNumber,
-  })
-    .then((user) => {
-      const token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400, // 24 hours
-      });
-      res.status(200).send({
-        id: user.id,
-        Username: user.Username,
-        mail: user.mail,
-        accessToken: token,
-      });
+  });
+
+  user
+    .save(user)
+    .then((data) => {
+      res.send({ message: "User was registered successfully!" });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -33,15 +28,11 @@ export const signup = (req, res) => {
 
 export const signin = async (req, res) => {
   try {
-    const user = await doctor.findOne({
-        where: {
-            [Op.or]: [{ Username: req.body.Username }, { mail: req.body.Username }],
-        },
-        });
+    const user = await User.findOne({
+      $or: [{ Username: req.body.Username }, { mail: req.body.Username }],
+    });
     if (!user) {
-      return res
-        .status(404)
-        .send({ message: "User Not found.", req: req.body.Username });
+      return res.status(404).send({ message: "User Not found." });
     }
     const passwordIsValid = bycrypt.compareSync(
       req.body.password,
@@ -57,7 +48,7 @@ export const signin = async (req, res) => {
       expiresIn: 86400, // 24 hours
     });
     res.status(200).send({
-      id: user.id,
+      id: user._id,
       Username: user.Username,
       mail: user.mail,
       accessToken: token,

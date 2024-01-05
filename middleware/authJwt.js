@@ -19,8 +19,5 @@ verifyToken = (req, res, next) => {
   });
 };
 
-const authJwt = {
-  verifyToken,
-};
 
-export default authJwt;
+export default verifyToken;
