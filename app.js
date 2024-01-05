@@ -22,6 +22,10 @@ app.use("/api/users", userRouter);
 import patientRouter from "./routes/patient.routes.js";
 app.use("/api/patients", patientRouter);
 
+
+import visiteRouter from "./routes/visite.routes.js";
+app.use("/api/visites", visiteRouter);
+
 // simple route
 app.get("/api/", (req, res) => {
     res.json({ message: "Marhaba..." });

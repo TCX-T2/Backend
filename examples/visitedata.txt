@@ -1,0 +1,7 @@
+{
+    "Patient_id": "65975a3814b3d603e0ba684b",
+    "Numero_visite": 4,
+     "Date_visite":"2023-3-24",
+     "Motif_Consultation": "voila voila ce malade ce qu'il a",
+     
+}

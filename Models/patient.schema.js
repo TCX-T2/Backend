@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Visite from "./visite.schema.js";
+//import Visite from "./visite.schema.js";
 
 const Patient = mongoose.model(
   "patient",
