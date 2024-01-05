@@ -3,7 +3,7 @@ mongoose.Promise = global.Promise;
 import User from "./user.schema.js";
 import Patient from "./patient.schema.js";
 import Visite from "./visite.schema.js";
-import RendezVous from "./rendez.schema.js";
+import RendezVous from "./rendezvous.schema.js";
 
 const db = {};
 

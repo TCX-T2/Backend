@@ -4,8 +4,8 @@ import {
   signin,
   getProfile,
   updateUser,
-  forgetPassword,
 } from "../controllers/user.controller.js";
+import {forgetPassword} from "../controllers/forgetPassword.controller.js";
 import checkDuplicateUsernameOrEmail from "../middleware/verifyDuplicate.js";
 import verifyToken from "../middleware/authJwt.js";
 import db from "../Models/index.js";
