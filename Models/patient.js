@@ -5,13 +5,13 @@ const patientSchema =new mongoose.Schema(
     {
         medecinId:{
             type: mongoose.Types.ObjectId, 
-                ref: "User",
+            ref: "User",
         },
-        Nom:
+        Nom_p:
         {  type:String,
            required:true,
         },
-        Prenom:{
+        Prenom_p:{
             type:String,
             required:true,
         },
@@ -19,7 +19,7 @@ const patientSchema =new mongoose.Schema(
             type:Date,
             required:true,
         },
-        PhoneNumber:{
+        Phone:{
             type:Number,
             required:true,
             unique:true
