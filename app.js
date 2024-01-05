@@ -26,7 +26,7 @@ import visiteRouter from "./routes/visite.routes.js";
 app.use("/visites/", visiteRouter);
 
 import RendezVousRouter from "./routes/rendezvous.routes.js";
-app.use("/RendezVous", RendezVousRouter);
+app.use("/rendezvous", RendezVousRouter);
 
 import ordonnanceRouter from "./routes/ordannance.routes.js";
 app.use("/ordonnances/", ordonnanceRouter);
