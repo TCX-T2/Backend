@@ -1,4 +1,3 @@
-import config from "../config/auth.config.js";
 import jwt from "jsonwebtoken";
 import bycrypt from "bcrypt";
 import db from "../Models/index.js";
@@ -19,7 +18,23 @@ export const signup = (req, res) => {
   user
     .save(user)
     .then((data) => {
-      res.send({ message: "User was registered successfully!" });
+      jwt.sign(
+        { id: user._id }, //
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: 86400 }, // 24 hours
+        (err, token) => {
+          if (err) {
+            res.status(500).send({ message: err.message });
+            return;
+          }
+          res.status(200).send({
+            id: user._id,
+            Username: user.Username,
+            mail: user.mail,
+            accessToken: token,
+          });
+        }
+      );
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -44,15 +59,23 @@ export const signin = async (req, res) => {
         message: "Invalid Password!",
       });
     }
-    const token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400, // 24 hours
-    });
-    res.status(200).send({
-      id: user._id,
-      Username: user.Username,
-      mail: user.mail,
-      accessToken: token,
-    });
+    jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: 86400 }, // 24 hours
+      (err, token) => {
+        if (err) {
+          res.status(500).send({ message: err.message });
+          return;
+        }
+        res.status(200).send({
+          id: user._id,
+          Username: user.Username,
+          mail: user.mail,
+          accessToken: token,
+        });
+      }
+    );
   } catch (err) {
     res.status(500).send({ message: err.message });
   }

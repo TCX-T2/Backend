@@ -11,25 +11,19 @@ app.use(express.json());
 
 connectDb();
 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-    }
-); // default route
-
 import userRouter from "./routes/user.routes.js";
-app.use("/api/users", userRouter);
+app.use("/users", userRouter);
 
 import patientRouter from "./routes/patient.routes.js";
-app.use("/api/patients", patientRouter);
-
+app.use("/patients", patientRouter);
 
 import visiteRouter from "./routes/visite.routes.js";
-app.use("/api/visites/", visiteRouter);
+app.use("/visites/", visiteRouter);
 
 // simple route
-app.get("/api/", (req, res) => {
-    res.json({ message: "Marhaba..." });
-  });
+app.get("/", (req, res) => {
+  res.json({ message: "Marhaba..." });
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
