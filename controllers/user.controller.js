@@ -80,3 +80,47 @@ export const signin = async (req, res) => {
     res.status(500).send({ message: err.message });
   }
 };
+
+export const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).send({ message: "User Not found." });
+    }
+    res.status(200).send({
+      id: user._id,
+      Username: user.Username,
+      mail: user.mail,
+      Speciality: user.Speciality,
+      PhoneNumber: user.PhoneNumber,
+    });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).send({ message: "User Not found." });
+    }
+    user.Nom = req.body.Nom;
+    user.Prenom = req.body.Prenom;
+    user.Username = req.body.Username;
+    user.mail = req.body.mail;
+    user.Speciality = req.body.Speciality;
+    user.PhoneNumber = req.body.PhoneNumber;
+    await user.save();
+    res.status(200).send({
+      id: user._id,
+      Username: user.Username,
+      mail: user.mail,
+      Speciality: user.Speciality,
+      PhoneNumber: user.PhoneNumber,
+    });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
