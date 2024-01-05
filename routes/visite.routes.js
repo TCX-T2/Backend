@@ -1,5 +1,4 @@
 import express from "express";
-import db from "../Models/index.js";
 import verifyToken from "../middleware/authJwt.js";
 import {
   getVisites,
@@ -9,19 +8,12 @@ import {
   deleteVisite,
 } from "../controllers/visite.controller.js";
 
-const Visite = db.visite;
 const router = express.Router();
 
-// router.post("/add", [verifyToken], addVisite);
-// router.get("/all", [verifyToken], getVisites);
-// router.get("/:id", [verifyToken], getVisiteById);
-// router.put("/:id", [verifyToken], updateVisite);
-// router.delete("/:id", [verifyToken], deleteVisite);
-
-router.get("/:idP/all", getVisites);
-router.post("/:idP/add", addVisite);
-router.get("/:idP/:idV", getVisiteById);
-router.put("/:idP/:idV", updateVisite);
-router.delete("/:idP/:idV", deleteVisite);
+router.get("/:idP/all", [verifyToken], getVisites);
+router.post("/:idP/add", [verifyToken], addVisite);
+router.get("/:idP/:idV", [verifyToken], getVisiteById);
+router.put("/:idP/:idV", [verifyToken], updateVisite);
+router.delete("/:idP/:idV", [verifyToken], deleteVisite);
 
 export default router;

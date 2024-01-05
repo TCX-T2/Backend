@@ -23,7 +23,6 @@ router.post("/logout", (req, res) => {
 
 router.get("/", async (req, res) => {
   // temporary route to get all users
-  // get all users
   const users = await User.find({});
   res.send(users);
 });

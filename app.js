@@ -1,9 +1,14 @@
 import express from "express";
 import connectDb from "./config/dbConnection.js";
 import dotenv from "dotenv";
+import responseHandler from "./middleware/addToHistory.js";
+import verifyToken from "./middleware/authJwt.js";
+
 dotenv.config();
 
 const app = express();
+// Apply the responseHandler middleware globally
+app.use(verifyToken, responseHandler);
 
 const port = process.env.PORT || 5000; // set port number
 
