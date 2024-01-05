@@ -16,8 +16,6 @@ const responseHandler = (req, res, next) => {
     const resourceId =
       req.params.idP || req.params.idR || req.params.id || req.userId;
     const ressourceName = req.baseUrl.split("/")[1];
-    console.log("req.baseUrl:", req.baseUrl);
-    console.log("ressourceName:", ressourceName);
     const actionType =
       req.method === "POST"
         ? ActionTypes.TYPE1

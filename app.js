@@ -28,6 +28,8 @@ app.use("/visites/", visiteRouter);
 import RendezVousRouter from "./routes/rendezvous.routes.js";
 app.use("/RendezVous", RendezVousRouter);
 
+import ordonnanceRouter from "./routes/ordannance.routes.js";
+app.use("/ordonnances/", ordonnanceRouter);
 
 // simple route
 app.get("/", (req, res) => {
