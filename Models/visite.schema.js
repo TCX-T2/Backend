@@ -1,36 +1,56 @@
 import mongoose from "mongoose";
 
-const Visite = mongoose.model(
-  "visites",
-  new mongoose.Schema({
-    patientId: {
+const Ordonnance=mongoose.Model("Ordonnance",new mongoose.Schema(
+  {
+    Visite_Id:{
       type: mongoose.Types.ObjectId,
-      ref: "Patient",
-      required: true,
+      ref:"Visite",
+      required:true,
     },
-    Numero_visite: {
-      type: Number,
-    },
-    Date_visite: {
-      type: Date,
-      required: true,
-    },
-    Motif_Consultation: {
-      type: String,
-    },
-    compte_rendu: {
-      type: String,
-    },
-    Ordonance: {
-      type: String,
-    },
-    liste_imagerie: {
-      type: String,
-    },
-    rapport_generee: {
-      type: String,
-    },
-  })
-);
+    Medicaments:[{
+      Traitement: [{
+        name: {
+          type: String,
+        },
+        dosage: {
+          type: Number,
+        },
+        duree: {
+          type: Number,
+        },
+      }]
+    }]
+  }
+))
 
-export default Visite;
+const Visite= mongoose.Model("visites", new mongoose.Schema({
+  patientId: {
+    type: mongoose.Types.ObjectId,
+    ref: "Patient",
+    required: true,
+  },
+  Numero_visite: {
+    type: Number,
+  },
+  Date_visite: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+  Motif_Consultation: {
+    type: String,
+  },
+  compte_rendu: {
+    type: String,
+  },
+  Liste_images: [
+    {
+      type:Image,
+    }
+  ],
+  rapport_generee: {
+    type: String,
+  },
+}));
+
+export {Visite,Ordonnance};
