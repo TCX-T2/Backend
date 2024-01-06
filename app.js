@@ -2,7 +2,7 @@ import express from "express";
 import connectDb from "./config/dbConnection.js";
 import dotenv from "dotenv";
 import responseHandler from "./middleware/addToHistory.js";
-import {verifyTokenForHistory} from "./middleware/authJwt.js";
+import { verifyTokenForHistory } from "./middleware/authJwt.js";
 import cors from "cors";
 dotenv.config();
 const app = express();
@@ -10,13 +10,13 @@ const app = express();
 const corsOptions = {
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
 
 // Apply the responseHandler middleware globally
-// app.use(verifyTokenForHistory, responseHandler);
+app.use(verifyTokenForHistory, responseHandler);
 
 const port = process.env.PORT || 5000; // set port number
 
@@ -45,6 +45,9 @@ app.use("/notifications/", notificationRouter);
 
 import detectionRouter from "./routes/detection.routes.js";
 app.use("/detection/", detectionRouter);
+
+import historyRouter from "./routes/history.routes.js";
+app.use("/history/", historyRouter);
 
 // simple route
 app.get("/", (req, res) => {
