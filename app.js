@@ -2,17 +2,26 @@ import express from "express";
 import connectDb from "./config/dbConnection.js";
 import dotenv from "dotenv";
 import responseHandler from "./middleware/addToHistory.js";
-import verifyToken from "./middleware/authJwt.js";
-
+import {verifyTokenForHistory} from "./middleware/authJwt.js";
+import cors from "cors";
 dotenv.config();
-
 const app = express();
+
+const corsOptions = {
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+
 // Apply the responseHandler middleware globally
-app.use(verifyToken, responseHandler);
+// app.use(verifyTokenForHistory, responseHandler);
 
 const port = process.env.PORT || 5000; // set port number
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 connectDb();
 

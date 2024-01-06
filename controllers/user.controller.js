@@ -29,9 +29,8 @@ export const signup = (req, res) => {
             return;
           }
           res.status(200).send({
-            id: user._id,
-            Username: user.Username,
-            mail: user.mail,
+            Nom: user.Nom,
+            Speciality: user.Speciality,
             accessToken: token,
           });
         }
@@ -44,21 +43,24 @@ export const signup = (req, res) => {
 
 export const signin = async (req, res) => {
   try {
+    console.log(req.body.Username);
     const user = await User.findOne({
       $or: [{ Username: req.body.Username }, { mail: req.body.Username }],
     });
     if (!user) {
-      return res.status(404).send({ message: "User Not found." });
+      res.status(404).send({ message: "User Not found." });
+      return;
     }
     const passwordIsValid = bycrypt.compareSync(
       req.body.password,
       user.password
     );
     if (!passwordIsValid) {
-      return res.status(401).send({
+      res.status(401).send({
         accessToken: null,
         message: "Invalid Password!",
       });
+      return;
     }
     jwt.sign(
       { id: user._id },
@@ -70,9 +72,8 @@ export const signin = async (req, res) => {
           return;
         }
         res.status(200).send({
-          id: user._id,
-          Username: user.Username,
-          mail: user.mail,
+          Nom: user.Nom,
+          Speciality: user.Speciality,
           accessToken: token,
         });
         // add the notifications for each rendez vous that the user has today

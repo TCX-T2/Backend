@@ -12,7 +12,9 @@ export const responseHandler = (req, res, next) => {
   onFinished(res, (err, data) => {
     const resourceId =
       req.params.idP || req.params.idR || req.params.id || req.userId;
+      if(!resourceId) return;
     const ressourceName = req.baseUrl.split("/")[1];
+    if(!ressourceName) return;
     const actionType =
       req.method === "POST"
         ? ActionTypes.TYPE1
