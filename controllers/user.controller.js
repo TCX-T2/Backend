@@ -30,6 +30,10 @@ export const signup = (req, res) => {
           }
           res.status(200).send({
             Nom: user.Nom,
+            Prenom: user.Prenom,
+            Username: user.Username,
+            mail: user.mail,
+            PhoneNumber: user.PhoneNumber,
             Speciality: user.Speciality,
             accessToken: token,
           });
@@ -73,6 +77,10 @@ export const signin = async (req, res) => {
         }
         res.status(200).send({
           Nom: user.Nom,
+          Prenom: user.Prenom,
+          Username: user.Username,
+          mail: user.mail,
+          PhoneNumber: user.PhoneNumber,
           Speciality: user.Speciality,
           accessToken: token,
         });

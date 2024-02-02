@@ -5,11 +5,10 @@ import {
   getProfile,
   updateUser,
 } from "../controllers/user.controller.js";
-import {forgetPassword} from "../controllers/forgetPassword.controller.js";
+import { forgetPassword } from "../controllers/forgetPassword.controller.js";
 import checkDuplicateUsernameOrEmail from "../middleware/verifyDuplicate.js";
 import verifyToken from "../middleware/authJwt.js";
-import db from "../Models/index.js";
-const User = db.user;
+
 const router = express.Router();
 
 router.post("/signup", [checkDuplicateUsernameOrEmail], signup);
@@ -20,11 +19,5 @@ router.post("/forgetPassword", forgetPassword);
 router.post("/logout", (req, res) => {
   res.status(200).send({ accessToken: null });
 });
-
-// router.get("/", async (req, res) => {
-//   // temporary route to get all users
-//   const users = await User.find({});
-//   res.send(users);
-// });
 
 export default router;
