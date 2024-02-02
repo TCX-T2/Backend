@@ -93,6 +93,8 @@ export const getProfile = async (req, res) => {
     }
     res.status(200).send({
       id: user._id,
+      Nom: user.Nom,
+      Prenom: user.Prenom,
       Username: user.Username,
       mail: user.mail,
       Speciality: user.Speciality,
