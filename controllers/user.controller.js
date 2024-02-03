@@ -137,3 +137,27 @@ export const updateUser = async (req, res) => {
     res.status(500).send({ message: err.message });
   }
 };
+
+export const updatePassword = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).send({ message: "User Not found." });
+    }
+    const passwordIsValid = bycrypt.compareSync(
+      req.body.oldPassword,
+      user.password
+    );
+    if (!passwordIsValid) {
+      res.status(406).send({
+        message: "Invalid Password!",
+      });
+      return;
+    }
+    user.password = bycrypt.hashSync(req.body.newPassword, 8);
+    await user.save();
+    res.status(200).send({ message: "Password Updated Successfully" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};

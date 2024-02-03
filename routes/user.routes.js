@@ -4,6 +4,7 @@ import {
   signin,
   getProfile,
   updateUser,
+  updatePassword,
 } from "../controllers/user.controller.js";
 import { forgetPassword } from "../controllers/forgetPassword.controller.js";
 import checkDuplicateUsernameOrEmail from "../middleware/verifyDuplicate.js";
@@ -15,6 +16,7 @@ router.post("/signup", [checkDuplicateUsernameOrEmail], signup);
 router.post("/signin", signin);
 router.get("/profile", [verifyToken], getProfile);
 router.put("/profile", [verifyToken], updateUser);
+router.put("/updatePassword", [verifyToken], updatePassword);
 router.post("/forgetPassword", forgetPassword);
 router.post("/logout", (req, res) => {
   res.status(200).send({ accessToken: null });
