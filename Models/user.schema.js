@@ -38,9 +38,14 @@ const User = mongoose.model(
       type: String,
       enum: allowedSpecialites,
     },
-
     PhoneNumber: {
       type: Number,
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
     },
   })
 );

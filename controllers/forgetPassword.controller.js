@@ -1,46 +1,82 @@
 import db from "../Models/index.js";
-import otp from "otp";
+import jwt from "jsonwebtoken";
+import bycrypt from "bcrypt";
 import nodemailer from "nodemailer";
-import pkg from 'google-auth-library';
-const { google } = pkg;
 const User = db.user;
 
-// OTP
+// Function to generate a JWT token
+const generateToken = (payload) => {
+  return jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "10m" });
+};
+
 export const forgetPassword = async (req, res) => {
-    const user = User.findOne({ mail: req.body.mail });
+  try {
+    const user = await User.findOne({ mail: req.body.email });
     if (!user) {
-      return res.status(404).send({ message: "User Not found." });
+      return res.status(404).send({ message: "User not found" });
     }
-  
-    const clientId = process.env.CLIENT_ID;
-    const clientSecret = process.env.CLIENT_SECRET;
-    const redirectUri = process.env.REDIRECT_URI;
-    const refreshToken = process.env.REFRESH_TOKEN;
-  
+
+    // Generate and save a unique JWT token for the user
+    const token = generateToken({ userId: user._id });
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 600000; // 10 minutes
+    await user.save();
+
+    // Send the token to the user's email
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        type: "OAuth2",
         user: process.env.EMAIL,
-        clientId,
-        clientSecret,
-        refreshToken,
+        pass: process.env.PASSWORD_EMAIL,
       },
     });
-  
-    const OTP = new otp({ secret: process.env.OTP_SECRET });
-    const token = OTP.totp();
+
     const mailOptions = {
       from: process.env.EMAIL,
-      to: req.body.mail,
+      to: req.body.email,
       subject: "Reset Password",
-      html: `<h1>OTP: ${token}</h1>`,
+      html: `<h1>Lien pour réinitialiser votre mot de passe</h1>
+    <p>Cliquez sur le lien suivant pour réinitialiser votre mot de passe</p>
+    <a href="http://localhost:5173/reset-password/${token}">http://localhost:5173/reset-password/${token}</a>
+    <p>Le lien expirera dans 10 minutes</p>
+    <p>Si vous n'avez pas demandé de réinitialisation de mot de passe, veuillez ignorer cet email</p>`,
     };
-  
+
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
         return res.status(500).send({ message: err.message });
       }
-      res.status(200).send({ message: "OTP sent successfully" });
+      res.status(200).send({ message: "Email sent" });
     });
-  };
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+// Handle token verification and password update
+export const resetPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(401).send({ message: "Token expired" });
+    }
+
+    // crypt the new password
+    const salt = await bycrypt.genSalt(10);
+    req.body.newPassword = await bycrypt.hash(req.body.newPassword, salt);
+
+    user.password = req.body.newPassword;
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    await user.save();
+
+    res.status(200).send({ message: "Password updated" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
