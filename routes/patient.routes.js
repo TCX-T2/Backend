@@ -1,5 +1,4 @@
 import express from "express";
-import db from "../Models/index.js";
 import verifyToken from "../middleware/authJwt.js";
 import {
   addPatient,
@@ -8,10 +7,24 @@ import {
   updatePatient,
   deletePatient,
 } from "../controllers/patient.controller.js";
-const Patient = db.patient;
+import multer from "multer";
+import path from "path";
+
 const router = express.Router();
 
-router.post("/add", [verifyToken], addPatient);
+// Configure multer for file storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../temp/'); // Save files to the 'uploads' directory
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname); // Rename file to avoid name conflicts
+  }
+});
+
+const upload = multer({ storage: storage });
+
+router.post("/add", [verifyToken], upload.single("file"), addPatient);
 router.get("/all", [verifyToken], getPatients);
 router.get("/:id", [verifyToken], getPatientById);
 router.put("/:id", [verifyToken], updatePatient);
