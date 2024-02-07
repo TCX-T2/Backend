@@ -8,23 +8,51 @@ import {
   deletePatient,
 } from "../controllers/patient.controller.js";
 import multer from "multer";
+import { v4 as uuidv4 } from "uuid";
 import path from "path";
 
 const router = express.Router();
 
-// Configure multer for file storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../temp/'); // Save files to the 'uploads' directory
+    cb(null, "storage/");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname); // Rename file to avoid name conflicts
-  }
+    cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
+  },
 });
 
-const upload = multer({ storage: storage });
+const fileFilter = (req, file, cb) => {
+  const allowedFileTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "application/pdf",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/msword",
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "text/plain",
+  ];
+  if (allowedFileTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+    res.status(400).send({ message: "Invalid file type" });
+  }
+};
 
-router.post("/add", [verifyToken], upload.single("file"), addPatient);
+let upload = multer({ storage, fileFilter });
+
+router.post(
+  "/add",
+  [verifyToken],
+  upload.fields([
+    { name: "images", maxCount: 5 },
+    { name: "bilans", maxCount: 5 },
+  ]),
+  addPatient
+);
 router.get("/all", [verifyToken], getPatients);
 router.get("/:id", [verifyToken], getPatientById);
 router.put("/:id", [verifyToken], updatePatient);

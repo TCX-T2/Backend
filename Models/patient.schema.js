@@ -6,6 +6,7 @@ const Patient = mongoose.model(
     medecinId: {
       type: mongoose.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     Nom_p: { type: String, required: true },
     Prenom_p: {
@@ -19,11 +20,14 @@ const Patient = mongoose.model(
     Phone: {
       type: Number,
       required: true,
-      unique: true,
+    },
+    email: {
+      type: String,
     },
     Sexe: {
       type: String,
       enum: ["Femme", "Homme"],
+      required: true,
     },
     ListeVisite: [
       { type: mongoose.Types.ObjectId, ref: "Visite", default: [] },
@@ -35,6 +39,33 @@ const Patient = mongoose.model(
     Antecedants: {
       type: String,
     },
+    MotifConsultation: {
+      type: String,
+    },
+    Medicaments: {
+      type: String,
+    },
+    CompteRendu: {
+      type: String,
+    },
+    DateVisite: {
+      type: Date,
+    },
+    DateProchaineRendezVous: {
+      type: Date,
+    },
+    // list of images
+    images: [
+      {
+        type: String,
+      },
+    ],
+    // list of bilans
+    bilans: [
+      {
+        type: String,
+      },
+    ],
   })
 );
 export default Patient;

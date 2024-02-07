@@ -13,15 +13,16 @@ const corsOptions = {
   credentials: true,
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
+app.use(express.json({ extended: false }));
+// app.use(express.json()); // parse requests of content-type - application/json
+// app.use(express.urlencoded({ extended: true })); // parse requests of content-type - application/x-www-form-urlencoded, 
 
 // Apply the responseHandler middleware globally
-app.use(verifyTokenForHistory, responseHandler);
+// app.use(verifyTokenForHistory, responseHandler);
 
 const port = process.env.PORT || 5000; // set port number
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 connectDb();
 
