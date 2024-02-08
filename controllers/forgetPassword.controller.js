@@ -65,7 +65,7 @@ export const resetPassword = async (req, res) => {
     if (!user) {
       return res.status(401).send({ message: "Token expired" });
     }
-
+    
     // crypt the new password
     const salt = await bycrypt.genSalt(10);
     req.body.newPassword = await bycrypt.hash(req.body.newPassword, salt);

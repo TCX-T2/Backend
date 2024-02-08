@@ -24,7 +24,6 @@ router.get("/verifyToken", [verifyToken], (req, res) => {
 });
 router.put("/updatePassword", [verifyToken], updatePassword);
 router.post("/forgetPassword", forgetPassword);
-// Handle token verification and password update
 router.post("/reset-password/:token", resetPassword);
 router.post("/logout", (req, res) => {
   res.status(200).send({ accessToken: null });
