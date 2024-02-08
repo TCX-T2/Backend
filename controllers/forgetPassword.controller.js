@@ -4,11 +4,6 @@ import bycrypt from "bcrypt";
 import nodemailer from "nodemailer";
 const User = db.user;
 
-// Function to generate a JWT token
-const generateToken = (payload) => {
-  return jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "10m" });
-};
-
 export const forgetPassword = async (req, res) => {
   try {
     const user = await User.findOne({ mail: req.body.email });
@@ -16,12 +11,10 @@ export const forgetPassword = async (req, res) => {
       return res.status(404).send({ message: "User not found" });
     }
 
-    // Generate and save a unique JWT token for the user
-    const token = generateToken({ userId: user._id });
-
-    user.resetPasswordToken = token;
-    user.resetPasswordExpires = Date.now() + 600000; // 10 minutes
-    await user.save();
+    // Generate a unique JWT token for the user that contains the user's id
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "10m",
+    });
 
     // Send the token to the user's email
     const transporter = nodemailer.createTransport({
@@ -57,22 +50,28 @@ export const forgetPassword = async (req, res) => {
 // Handle token verification and password update
 export const resetPassword = async (req, res) => {
   try {
-    const user = await User.findOne({
-      resetPasswordToken: req.params.token,
-      resetPasswordExpires: { $gt: Date.now() },
-    });
+    // Verify the token sent by the user
+    const decodedToken = jwt.verify(
+      req.params.token,
+      process.env.JWT_SECRET_KEY
+    );
 
-    if (!user) {
-      return res.status(401).send({ message: "Token expired" });
+    // If the token is invalid, return an error
+    if (!decodedToken) {
+      return res.status(401).send({ message: "Invalid token" });
     }
-    
+
+    // find the user with the id from the token
+    const user = await User.findOne({ _id: decodedToken.userId });
+    if (!user) {
+      return res.status(401).send({ message: "no user found" });
+    }
+
     // crypt the new password
     const salt = await bycrypt.genSalt(10);
     req.body.newPassword = await bycrypt.hash(req.body.newPassword, salt);
 
     user.password = req.body.newPassword;
-    user.resetPasswordToken = null;
-    user.resetPasswordExpires = null;
     await user.save();
 
     res.status(200).send({ message: "Password updated" });
